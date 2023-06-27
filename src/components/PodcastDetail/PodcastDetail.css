@@ -1,0 +1,43 @@
+.podcastDetail-sidebar {
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  width: 200px;
+  box-shadow: 2px 3px 3px 3px rgba(53, 50, 50, 0.29);
+}
+
+.podcastDetail-sidebar > div:not(:last-child) {
+  margin-bottom: 10px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 10px;
+}
+
+.podcastDetail-cover {
+  width: 150px;
+  height: auto;
+  padding: 10px;
+  display: block;
+  margin: 0 auto;
+}
+.podcastDetail-container {
+}
+
+.collection_artist_container {
+}
+
+.collectionName {
+  font-weight: bold;
+  margin: 0;
+}
+
+.artistName {
+  font-style: italic;
+  margin: 0;
+}
+.description {
+  font-weight: bold;
+}
+.collectionName,
+.artistName {
+  margin: 0;
+}
