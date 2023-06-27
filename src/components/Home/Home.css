@@ -1,0 +1,13 @@
+.home_container {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.search-box {
+  padding: 10px;
+  width: 300px;
+  line-height: 20px;
+  margin: 10px;
+  border-radius: 5px;
+  color: black;
+  background-color: white;
+}

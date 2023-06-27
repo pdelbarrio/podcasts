@@ -3,14 +3,12 @@ import { Link } from "react-router-dom";
 import "./PodcastList.css";
 
 export default function PodcastList({ podcasts }) {
-  const entries = podcasts.feed?.entry;
-
-  if (!entries) {
+  if (!podcasts) {
     return <div>No data available</div>;
   }
   return (
     <div className="container">
-      {entries.map((entry) => {
+      {podcasts.map((entry) => {
         const name = entry["im:name"]?.label;
         const image = entry["im:image"]?.[2]?.label;
         const artist = entry["im:artist"]?.label;
