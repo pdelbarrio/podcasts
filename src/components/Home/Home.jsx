@@ -9,15 +9,30 @@ export default function Home() {
   const [searchField, setSearchField] = useState("");
 
   useEffect(() => {
+    const lastFetchDate = localStorage.getItem("lastFetchDate");
+    const currentDate = new Date().getTime();
+    const oneDay = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+
     async function fetchPodcastData() {
       const response = await fetch(
         "https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json"
       );
       const data = await response.json();
       setPodcasts(data.feed.entry);
-      setFilteredPodcasts(data.feed.entry);
+      localStorage.setItem("podcasts", JSON.stringify(data.feed.entry));
+      localStorage.setItem("lastFetchDate", currentDate.toString());
     }
-    fetchPodcastData();
+
+    const storedPodcasts = localStorage.getItem("podcasts");
+
+    if (!lastFetchDate || currentDate - parseInt(lastFetchDate, 10) > oneDay) {
+      console.log("Se realiza el fetch");
+      fetchPodcastData();
+    } else if (storedPodcasts) {
+      console.log("hay podcasts almacenados, no ha pasado un dia");
+      setPodcasts(JSON.parse(storedPodcasts));
+      setFilteredPodcasts(JSON.parse(storedPodcasts));
+    }
   }, []);
 
   useEffect(() => {
