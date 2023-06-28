@@ -1,3 +1,21 @@
 .header-container {
+  display: flex;
+  justify-content: space-between;
+  direction: row;
   height: 100px;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.main {
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 25px;
+  color: #6699cc;
+}
+
+.loading-container {
+  display: flex;
+  align-items: center;
 }

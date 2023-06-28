@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PodcastList from "../PodcastList/PodcastList";
-// import SearchBox from "../SearchBox/SearchBox";
 import "./Home.css";
+// import SearchBox from "../SearchBox/SearchBox";
 
 export default function Home() {
   const [podcasts, setPodcasts] = useState([]);
@@ -44,7 +44,7 @@ export default function Home() {
         placeholder="Filter podcasts..."
         className="search-box"
       />
-
+      {/* <SearchBox handleSearchChange={handleSearchChange} /> */}
       <PodcastList podcasts={filteredPodcasts} />
     </div>
   );

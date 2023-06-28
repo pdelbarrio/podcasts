@@ -1,11 +1,20 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
+import { useContext } from "react";
+import { PodcastContext } from "../../context/podcast.context";
 import "./PodcastList.css";
 
 export default function PodcastList({ podcasts }) {
+  const { startLoading } = useContext(PodcastContext);
+
   if (!podcasts) {
     return <div>No data available</div>;
   }
+
+  const handleStartNavigating = () => {
+    startLoading();
+  };
+
   return (
     <div className="container">
       {podcasts.map((entry) => {
@@ -19,6 +28,7 @@ export default function PodcastList({ podcasts }) {
             className="podcastContainer"
             to={`/podcast/${podcastId}`}
             key={podcastId}
+            onClick={handleStartNavigating}
           >
             <div className="podcastWrapper">
               <img className="podcastCover" src={image} alt={name} />

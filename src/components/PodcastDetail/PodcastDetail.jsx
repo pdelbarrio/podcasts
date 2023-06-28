@@ -1,12 +1,15 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
+import { PodcastContext } from "../../context/podcast.context";
 import "./PodcastDetail.css";
 
 export default function PodcastDetail() {
   const [podcastInfo, setPodcastInfo] = useState({});
+  const { stopLoading } = useContext(PodcastContext);
   const { podcastId } = useParams();
 
   useEffect(() => {
+    stopLoading();
     const url = `https://api.allorigins.win/get?url=${encodeURIComponent(
       `https://itunes.apple.com/lookup?id=${podcastId}`
     )}`;
@@ -24,7 +27,7 @@ export default function PodcastDetail() {
           artworkUrl600: podcastData.artworkUrl600,
           collectionName: podcastData.collectionName,
           artistName: podcastData.artistName,
-          description: podcastData.description, // TODO:
+          description: podcastData.description, // TODO: No existe propiedad description en JSON
         };
 
         setPodcastInfo(updatedPodcastInfo);
