@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import PodcastList from "../PodcastList/PodcastList";
 import "./Home.css";
-// import SearchBox from "../SearchBox/SearchBox";
+import SearchBox from "../SearchBox/SearchBox";
 
 export default function Home() {
   const [podcasts, setPodcasts] = useState([]);
@@ -30,7 +30,7 @@ export default function Home() {
     setFilteredPodcasts(newFilteredPodcasts);
   }, [podcasts, searchField]);
 
-  console.log(filteredPodcasts);
+  const numberOfFilteredPodcasts = filteredPodcasts.length;
 
   const handleSearchChange = (event) => {
     setSearchField(event.target.value);
@@ -38,13 +38,10 @@ export default function Home() {
 
   return (
     <div className="home_container">
-      <input
-        type="search"
-        onChange={handleSearchChange}
-        placeholder="Filter podcasts..."
-        className="search-box"
+      <SearchBox
+        number={numberOfFilteredPodcasts}
+        handleSearchChange={handleSearchChange}
       />
-      {/* <SearchBox handleSearchChange={handleSearchChange} /> */}
       <PodcastList podcasts={filteredPodcasts} />
     </div>
   );

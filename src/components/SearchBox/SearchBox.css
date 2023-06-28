@@ -9,4 +9,18 @@
 }
 
 .search-box_container {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  text-align: right;
+  max-width: 1000px;
+  margin: 0 auto;
+}
+.number {
+  font-weight: bold;
+  border-radius: 10px;
+  color: white;
+  padding: 5px;
+  font-size: 1rem;
+  background-color: #6699cc;
 }
