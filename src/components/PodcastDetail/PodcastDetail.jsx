@@ -96,27 +96,31 @@ export default function PodcastDetail() {
           <p className="description">{podcastDescription}</p>
         </div>
       </div>
-      <div className="episodes">
+      <div className="episodes-container">
         <div className="episodes">
-          <h2>Episodes: {episodes.length}</h2>
-          <table>
-            <thead>
-              <tr>
-                <th>Title</th>
-                <th>Date</th>
-                <th>Duration</th>
-              </tr>
-            </thead>
-            <tbody>
-              {episodes.map((episode) => (
-                <tr key={episode.episode}>
-                  <td>{episode.title}</td>
-                  <td>{formatDate(episode.pubDate)}</td>
-                  <td>{episode.duration}</td>
+          <div className="episodes-header">
+            <h2>Episodes: {episodes.length}</h2>
+          </div>
+          <div className="episodes-list">
+            <table>
+              <thead>
+                <tr>
+                  <th>Title</th>
+                  <th>Date</th>
+                  <th>Duration</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {episodes.map((episode) => (
+                  <tr key={episode.episode}>
+                    <td>{episode.title}</td>
+                    <td>{formatDate(episode.pubDate)}</td>
+                    <td>{episode.duration}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

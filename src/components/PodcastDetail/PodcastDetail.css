@@ -4,6 +4,7 @@
   padding: 30px;
   width: 200px;
   box-shadow: 2px 3px 3px 3px rgba(53, 50, 50, 0.29);
+  margin-right: 70px;
 }
 
 .podcastDetail-sidebar > div:not(:last-child) {
@@ -21,9 +22,6 @@
 }
 .podcastDetail-container {
   display: flex;
-}
-
-.collection_artist_container {
 }
 
 .collectionName {
@@ -46,4 +44,33 @@
 .collectionName,
 .artistName {
   margin: 0;
+}
+.episodes-container {
+  width: 600px;
+}
+.episodes-header {
+  padding: 1px 1px 1px 15px;
+  box-shadow: 2px 3px 3px 3px rgba(53, 50, 50, 0.29);
+}
+.episodes-list {
+  margin-top: 30px;
+  box-shadow: 2px 3px 3px 3px rgba(53, 50, 50, 0.29);
+}
+.episodes-list table {
+  width: 100%;
+}
+.episodes-list table tbody tr:nth-child(odd) {
+  background-color: #f4ecec; /* Color de fondo para filas pares */
+}
+
+/* Estilos para las celdas de la tabla */
+.episodes-list table tbody td {
+  padding: 8px; /* Espacio interno en las celdas */
+  border-bottom: 1px solid #ccc; /* Línea horizontal entre las filas */
+}
+
+/* Estilos para la cabecera de la tabla */
+.episodes-list table thead th {
+  padding: 8px; /* Espacio interno en las celdas de la cabecera */
+  background-color: #fcfcfc; /* Color de fondo para la cabecera */
 }
