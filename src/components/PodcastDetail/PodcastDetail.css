@@ -20,6 +20,7 @@
   margin: 0 auto;
 }
 .podcastDetail-container {
+  display: flex;
 }
 
 .collection_artist_container {
@@ -34,8 +35,13 @@
   font-style: italic;
   margin: 0;
 }
-.description {
+.descriptionTitle {
+  margin: 0;
   font-weight: bold;
+}
+.description {
+  margin: 0;
+  font-style: italic;
 }
 .collectionName,
 .artistName {

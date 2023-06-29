@@ -5,6 +5,8 @@ import "./PodcastDetail.css";
 
 export default function PodcastDetail() {
   const [podcastInfo, setPodcastInfo] = useState({});
+  const [podcastDescription, setPodcastDescription] = useState("");
+  const [episodes, setEpisodes] = useState([]);
   const { stopLoading } = useContext(PodcastContext);
   const { podcastId } = useParams();
 
@@ -23,14 +25,51 @@ export default function PodcastDetail() {
         const parsedData = JSON.parse(data.contents);
         const podcastData = parsedData.results[0];
         console.log(parsedData);
+        console.log(podcastData.feedUrl);
+
         const updatedPodcastInfo = {
           artworkUrl600: podcastData.artworkUrl600,
           collectionName: podcastData.collectionName,
           artistName: podcastData.artistName,
-          description: podcastData.description, // TODO: No existe propiedad description en JSON
         };
 
         setPodcastInfo(updatedPodcastInfo);
+
+        const corsAnywhereUrl = "https://cors-anywhere.herokuapp.com/";
+        const urlXML = `${corsAnywhereUrl}${podcastData.feedUrl}`;
+
+        fetch(urlXML)
+          .then((response) => {
+            if (response.ok) return response.text();
+            throw new Error("Network response was not ok.");
+          })
+          .then((xmlContent) => {
+            const parser = new DOMParser();
+            const xmlDoc = parser.parseFromString(xmlContent, "text/xml");
+
+            const description = xmlDoc.querySelector("description").textContent;
+
+            setPodcastDescription(description);
+            console.log(xmlContent);
+
+            const episodesList = Array.from(
+              xmlDoc.querySelectorAll("item")
+            ).map((item) => {
+              const titleElement = item.querySelector("title");
+              const pubDateElement = item.querySelector("pubDate");
+              const durationElement = item.querySelector("itunes\\:duration");
+
+              return {
+                title: titleElement ? titleElement.textContent : "",
+                pubDate: pubDateElement ? pubDateElement.textContent : "",
+                duration: durationElement ? durationElement.textContent : "",
+              };
+            });
+            setEpisodes(episodesList);
+          })
+          .catch((error) => {
+            console.error("Error fetching XML content:", error);
+          });
       })
       .catch((error) => {
         console.error("Error fetching podcast details:", error);
@@ -52,10 +91,33 @@ export default function PodcastDetail() {
           <p className="artistName">by {podcastInfo.artistName}</p>
         </div>
         <div>
-          <p className="description">Description: {podcastInfo.description}</p>
+          <p className="descriptionTitle">Description: </p>
+          <p className="description">{podcastDescription}</p>
         </div>
       </div>
-      <div className="episodes"></div>
+      <div className="episodes">
+        <div className="episodes">
+          <h2>Number of Episodes: {episodes.length}</h2>
+          <table>
+            <thead>
+              <tr>
+                <th>Title</th>
+                <th>Date</th>
+                <th>Duration</th>
+              </tr>
+            </thead>
+            <tbody>
+              {episodes.map((episode) => (
+                <tr key={episode.episode}>
+                  <td>{episode.title}</td>
+                  <td>{episode.pubDate}</td>
+                  <td>{episode.duration}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
     </div>
   );
 }
