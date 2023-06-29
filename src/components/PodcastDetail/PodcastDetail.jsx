@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import { PodcastContext } from "../../context/podcast.context";
+import { formatDate } from "../../utils/utils";
 import "./PodcastDetail.css";
 
 export default function PodcastDetail() {
@@ -97,7 +98,7 @@ export default function PodcastDetail() {
       </div>
       <div className="episodes">
         <div className="episodes">
-          <h2>Number of Episodes: {episodes.length}</h2>
+          <h2>Episodes: {episodes.length}</h2>
           <table>
             <thead>
               <tr>
@@ -110,7 +111,7 @@ export default function PodcastDetail() {
               {episodes.map((episode) => (
                 <tr key={episode.episode}>
                   <td>{episode.title}</td>
-                  <td>{episode.pubDate}</td>
+                  <td>{formatDate(episode.pubDate)}</td>
                   <td>{episode.duration}</td>
                 </tr>
               ))}
