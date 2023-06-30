@@ -1,5 +1,6 @@
 /* eslint-disable react/prop-types */
 import { Link } from "react-router-dom";
+import parse from "html-react-parser";
 import "./PodcastSidebar.css";
 
 export default function PodcastSidebar({
@@ -30,7 +31,7 @@ export default function PodcastSidebar({
       </Link>
       <div>
         <p className="descriptionTitle">Description: </p>
-        <p className="description">{podcastDescription}</p>
+        <p className="description">{parse(podcastDescription)}</p>
       </div>
     </div>
   );

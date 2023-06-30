@@ -1,4 +1,5 @@
 import { useLocation } from "react-router-dom";
+import parse from "html-react-parser";
 import PodcastSidebar from "../PodcastSidebar/PodcastSidebar";
 import "./EpisodeDetail.css";
 
@@ -20,7 +21,7 @@ export default function EpisodeDetail() {
       />
       <div className="episode-wrapper">
         <p className="title">{title}</p>
-        <p className="description">{description}</p>
+        <p className="description">{parse(description)}</p>
         <audio controls="controls">
           <source src={audio} type="audio/ogg" />{" "}
         </audio>
