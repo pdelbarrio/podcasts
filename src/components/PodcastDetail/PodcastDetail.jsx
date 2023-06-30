@@ -1,12 +1,16 @@
 import { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { PodcastContext } from "../../context/podcast.context";
 import { formatDate } from "../../utils/utils";
 import "./PodcastDetail.css";
+import PodcastSidebar from "../PodcastSidebar/PodcastSidebar";
 
 export default function PodcastDetail() {
   const [podcastInfo, setPodcastInfo] = useState({});
   const [podcastDescription, setPodcastDescription] = useState("");
+  const [podcastArtwork, setPodcastArtwork] = useState("");
+  const [podcastTitle, setPodcastTitle] = useState("");
+  const [podcastAutor, setPodcastAutor] = useState("");
   const [episodes, setEpisodes] = useState([]);
   const { stopLoading } = useContext(PodcastContext);
   const { podcastId } = useParams();
@@ -25,16 +29,17 @@ export default function PodcastDetail() {
       .then((data) => {
         const parsedData = JSON.parse(data.contents);
         const podcastData = parsedData.results[0];
-        console.log(parsedData);
-        console.log(podcastData.feedUrl);
 
         const updatedPodcastInfo = {
-          artworkUrl600: podcastData.artworkUrl600,
+          cover: podcastData.artworkUrl600,
           collectionName: podcastData.collectionName,
           artistName: podcastData.artistName,
         };
 
         setPodcastInfo(updatedPodcastInfo);
+        setPodcastArtwork(updatedPodcastInfo.cover);
+        setPodcastTitle(updatedPodcastInfo.collectionName);
+        setPodcastAutor(updatedPodcastInfo.artistName);
 
         const corsAnywhereUrl = "https://cors-anywhere.herokuapp.com/";
         const urlXML = `${corsAnywhereUrl}${podcastData.feedUrl}`;
@@ -51,7 +56,7 @@ export default function PodcastDetail() {
             const description = xmlDoc.querySelector("description").textContent;
 
             setPodcastDescription(description);
-            console.log(xmlContent);
+            // console.log(xmlContent);
 
             const episodesList = Array.from(
               xmlDoc.querySelectorAll("item")
@@ -59,11 +64,19 @@ export default function PodcastDetail() {
               const titleElement = item.querySelector("title");
               const pubDateElement = item.querySelector("pubDate");
               const durationElement = item.querySelector("itunes\\:duration");
+              const descriptionElement = item.querySelector("description");
+              const enclosureElement = item.querySelector("enclosure");
+
+              const enclosureUrl = enclosureElement.getAttribute("url");
 
               return {
                 title: titleElement ? titleElement.textContent : "",
                 pubDate: pubDateElement ? pubDateElement.textContent : "",
                 duration: durationElement ? durationElement.textContent : "",
+                description: descriptionElement
+                  ? descriptionElement.textContent
+                  : "",
+                enclosureUrl: enclosureUrl ? enclosureUrl : "",
               };
             });
             setEpisodes(episodesList);
@@ -79,23 +92,14 @@ export default function PodcastDetail() {
 
   return (
     <div className="podcastDetail-container">
-      <div className="podcastDetail-sidebar">
-        <div>
-          <img
-            className="podcastDetail-cover"
-            src={podcastInfo.artworkUrl600}
-            alt="Podcast Artwork"
-          />
-        </div>
-        <div>
-          <p className="collectionName">{podcastInfo.collectionName}</p>
-          <p className="artistName">by {podcastInfo.artistName}</p>
-        </div>
-        <div>
-          <p className="descriptionTitle">Description: </p>
-          <p className="description">{podcastDescription}</p>
-        </div>
-      </div>
+      <PodcastSidebar
+        artwork={podcastArtwork}
+        collectionName={podcastTitle}
+        artistName={podcastAutor}
+        podcastDescription={podcastDescription}
+        podcastId={podcastId}
+      />
+
       <div className="episodes-container">
         <div className="episodes">
           <div className="episodes-header">
@@ -111,9 +115,22 @@ export default function PodcastDetail() {
                 </tr>
               </thead>
               <tbody>
-                {episodes.map((episode) => (
+                {episodes.map((episode, index) => (
                   <tr key={episode.episode}>
-                    <td>{episode.title}</td>
+                    <Link
+                      to={`/podcast/${podcastId}/episode/${index + 1}`}
+                      state={{
+                        episode,
+                        podcastArtwork,
+                        podcastTitle,
+                        podcastAutor,
+                        podcastDescription,
+                        podcastId,
+                      }}
+                      // onClick={handleStartNavigating}
+                    >
+                      <td>{episode.title}</td>
+                    </Link>
                     <td>{formatDate(episode.pubDate)}</td>
                     <td>{episode.duration}</td>
                   </tr>

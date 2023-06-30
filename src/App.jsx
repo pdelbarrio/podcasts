@@ -2,9 +2,10 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "./components/Home/Home";
 import PodcastDetail from "./components/PodcastDetail/PodcastDetail";
-import Episode from "./components/Episode/Episode";
+
 import Header from "./components/Header/Header";
 import { PodcastProvider } from "./context/podcast.context";
+import EpisodeDetail from "./components/EpisodeDetail/EpisodeDetail";
 
 function App() {
   return (
@@ -17,7 +18,7 @@ function App() {
             <Route path="/podcast/:podcastId" element={<PodcastDetail />} />
             <Route
               path="/podcast/:podcastId/episode/:episodeId"
-              element={<Episode />}
+              element={<EpisodeDetail />}
             />
           </Routes>
         </BrowserRouter>
