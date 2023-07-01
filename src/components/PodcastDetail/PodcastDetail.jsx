@@ -21,12 +21,22 @@ export default function PodcastDetail() {
       `https://itunes.apple.com/lookup?id=${podcastId}`
     )}`;
 
-    fetch(url)
-      .then((response) => {
-        if (response.ok) return response.json();
-        throw new Error("Network response was not ok.");
-      })
-      .then((data) => {
+    const lastFetchDate = localStorage.getItem(`lastFetchDate_${podcastId}`);
+    const storedPodcastInfo = localStorage.getItem(`podcastInfo_${podcastId}`);
+    const storedPodcastDescription = localStorage.getItem(
+      `podcastDescription_${podcastId}`
+    );
+    const storedEpisodesList = localStorage.getItem(
+      `episodesList_${podcastId}`
+    );
+
+    const currentDate = new Date().getTime();
+    const oneDay = 24 * 60 * 60 * 1000; // 24 horas en milisegundos
+
+    async function fetchPodcastData() {
+      const response = await fetch(url);
+      if (response.ok) {
+        const data = await response.json();
         const parsedData = JSON.parse(data.contents);
         const podcastData = parsedData.results[0];
 
@@ -56,7 +66,6 @@ export default function PodcastDetail() {
             const description = xmlDoc.querySelector("description").textContent;
 
             setPodcastDescription(description);
-            // console.log(xmlContent);
 
             const episodesList = Array.from(
               xmlDoc.querySelectorAll("item")
@@ -79,15 +88,53 @@ export default function PodcastDetail() {
                 enclosureUrl: enclosureUrl ? enclosureUrl : "",
               };
             });
+
+            // Establecer los estados correspondientes
             setEpisodes(episodesList);
+
+            // Almacenar los datos en localStorage
+            localStorage.setItem(
+              `podcastInfo_${podcastId}`,
+              JSON.stringify(updatedPodcastInfo)
+            );
+            localStorage.setItem(
+              `podcastDescription_${podcastId}`,
+              description
+            );
+            localStorage.setItem(
+              `episodesList_${podcastId}`,
+              JSON.stringify(episodesList)
+            );
+            localStorage.setItem(
+              `lastFetchDate_${podcastId}`,
+              currentDate.toString()
+            );
           })
           .catch((error) => {
             console.error("Error fetching XML content:", error);
           });
-      })
-      .catch((error) => {
-        console.error("Error fetching podcast details:", error);
-      });
+      } else {
+        throw new Error("Network response was not ok.");
+      }
+    }
+
+    if (
+      !lastFetchDate ||
+      currentDate - parseInt(lastFetchDate, 10) > oneDay ||
+      !storedPodcastInfo ||
+      !storedPodcastDescription ||
+      !storedEpisodesList
+    ) {
+      console.log("Se realiza el fetch");
+      fetchPodcastData();
+    } else {
+      console.log("Se obtienen los datos de localStorage");
+      setPodcastInfo(JSON.parse(storedPodcastInfo));
+      setPodcastDescription(storedPodcastDescription);
+      setEpisodes(JSON.parse(storedEpisodesList));
+      setPodcastArtwork(podcastInfo.cover);
+      console.log("podcastInfo", podcastInfo);
+    }
   }, [podcastId]);
 
   return (
