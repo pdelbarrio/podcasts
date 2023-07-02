@@ -93,10 +93,8 @@ export default function PodcastDetail() {
               };
             });
 
-            // Establecer los estados correspondientes
             setEpisodes(episodesList);
 
-            // Almacenar los datos en localStorage
             localStorage.setItem(
               `podcastInfo_${podcastId}`,
               JSON.stringify(updatedPodcastInfo)
@@ -137,7 +135,6 @@ export default function PodcastDetail() {
       setPodcastDescription(storedPodcastDescription);
       setEpisodes(JSON.parse(storedEpisodesList));
       setPodcastArtwork(podcastInfo.cover);
-      console.log("podcastInfo", podcastInfo);
     }
     setIsLoading(false);
   }, [podcastId, stopNavigationLoading]);

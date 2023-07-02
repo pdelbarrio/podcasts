@@ -25,3 +25,8 @@
   padding: 8px;
   background-color: #fcfcfc;
 }
+
+.episode-link {
+  color: #314978;
+  text-decoration: none;
+}

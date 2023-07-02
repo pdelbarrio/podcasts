@@ -8,7 +8,7 @@ import { PodcastContext } from "../../context/podcast.context";
 export default function EpisodeDetail() {
   const { stopNavigationLoading } = useContext(PodcastContext);
   let { state } = useLocation();
-  console.log(state);
+
   const title = state.episode.title;
   const description = state.episode.description;
   const audio = state.episode.enclosureUrl;
