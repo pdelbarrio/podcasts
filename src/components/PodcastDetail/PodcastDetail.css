@@ -24,6 +24,7 @@
 .episodes-list table thead th {
   padding: 8px;
   background-color: #fcfcfc;
+  text-align: left;
 }
 
 .episode-link {

@@ -135,6 +135,8 @@ export default function PodcastDetail() {
       setPodcastDescription(storedPodcastDescription);
       setEpisodes(JSON.parse(storedEpisodesList));
       setPodcastArtwork(podcastInfo.cover);
+      setPodcastAutor(podcastInfo.artistName);
+      setPodcastTitle(podcastInfo.collectionName);
     }
     setIsLoading(false);
   }, [podcastId, stopNavigationLoading]);
