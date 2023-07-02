@@ -4,6 +4,7 @@ import { PodcastContext } from "../../context/podcast.context";
 import { formatDate } from "../../utils/utils";
 import "./PodcastDetail.css";
 import PodcastSidebar from "../PodcastSidebar/PodcastSidebar";
+import Loading from "../Loader/Loader";
 
 export default function PodcastDetail() {
   const [podcastInfo, setPodcastInfo] = useState({});
@@ -12,11 +13,14 @@ export default function PodcastDetail() {
   const [podcastTitle, setPodcastTitle] = useState("");
   const [podcastAutor, setPodcastAutor] = useState("");
   const [episodes, setEpisodes] = useState([]);
-  const { stopLoading } = useContext(PodcastContext);
+  const [isLoading, setIsLoading] = useState(false);
+  const { stopNavigationLoading, startNavigationLoading } =
+    useContext(PodcastContext);
   const { podcastId } = useParams();
 
   useEffect(() => {
-    stopLoading();
+    setIsLoading(true);
+    stopNavigationLoading();
     const url = `https://api.allorigins.win/get?url=${encodeURIComponent(
       `https://itunes.apple.com/lookup?id=${podcastId}`
     )}`;
@@ -135,58 +139,69 @@ export default function PodcastDetail() {
       setPodcastArtwork(podcastInfo.cover);
       console.log("podcastInfo", podcastInfo);
     }
-  }, [podcastId]);
+    setIsLoading(false);
+  }, [podcastId, stopNavigationLoading]);
+
+  const handleStartNavigating = () => {
+    startNavigationLoading();
+  };
 
   return (
-    <div className="podcastDetail-container">
-      <PodcastSidebar
-        artwork={podcastArtwork}
-        collectionName={podcastTitle}
-        artistName={podcastAutor}
-        podcastDescription={podcastDescription}
-        podcastId={podcastId}
-      />
+    <>
+      {isLoading ? (
+        <Loading />
+      ) : (
+        <div className="podcastDetail-container">
+          <PodcastSidebar
+            artwork={podcastArtwork}
+            collectionName={podcastTitle}
+            artistName={podcastAutor}
+            podcastDescription={podcastDescription}
+            podcastId={podcastId}
+          />
 
-      <div className="episodes-container">
-        <div className="episodes">
-          <div className="episodes-header">
-            <h2>Episodes: {episodes.length}</h2>
-          </div>
-          <div className="episodes-list">
-            <table>
-              <thead>
-                <tr>
-                  <th>Title</th>
-                  <th>Date</th>
-                  <th>Duration</th>
-                </tr>
-              </thead>
-              <tbody>
-                {episodes.map((episode, index) => (
-                  <tr key={episode.episode}>
-                    <Link
-                      to={`/podcast/${podcastId}/episode/${index + 1}`}
-                      state={{
-                        episode,
-                        podcastArtwork,
-                        podcastTitle,
-                        podcastAutor,
-                        podcastDescription,
-                        podcastId,
-                      }}
-                      // onClick={handleStartNavigating}
-                    >
-                      <td>{episode.title}</td>
-                    </Link>
-                    <td>{formatDate(episode.pubDate)}</td>
-                    <td>{episode.duration}</td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+          <div className="episodes-container">
+            <div className="episodes">
+              <div className="episodes-header">
+                <h2>Episodes: {episodes.length}</h2>
+              </div>
+              <div className="episodes-list">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Title</th>
+                      <th>Date</th>
+                      <th>Duration</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {episodes.map((episode, index) => (
+                      <tr key={episode.episode}>
+                        <Link
+                          to={`/podcast/${podcastId}/episode/${index + 1}`}
+                          state={{
+                            episode,
+                            podcastArtwork,
+                            podcastTitle,
+                            podcastAutor,
+                            podcastDescription,
+                            podcastId,
+                          }}
+                          onClick={handleStartNavigating}
+                        >
+                          <td className="episode-link">{episode.title}</td>
+                        </Link>
+                        <td>{formatDate(episode.pubDate)}</td>
+                        <td>{episode.duration}</td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }

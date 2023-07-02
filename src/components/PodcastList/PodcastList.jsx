@@ -5,14 +5,14 @@ import { PodcastContext } from "../../context/podcast.context";
 import "./PodcastList.css";
 
 export default function PodcastList({ podcasts }) {
-  const { startLoading } = useContext(PodcastContext);
+  const { startNavigationLoading } = useContext(PodcastContext);
 
   if (!podcasts) {
     return <div>No data available</div>;
   }
 
   const handleStartNavigating = () => {
-    startLoading();
+    startNavigationLoading();
   };
 
   return (

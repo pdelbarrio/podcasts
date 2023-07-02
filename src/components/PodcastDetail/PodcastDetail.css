@@ -13,17 +13,15 @@
   width: 100%;
 }
 .episodes-list table tbody tr:nth-child(odd) {
-  background-color: #f4ecec; /* Color de fondo para filas pares */
+  background-color: #f4ecec;
 }
 
-/* Estilos para las celdas de la tabla */
 .episodes-list table tbody td {
-  padding: 8px; /* Espacio interno en las celdas */
-  border-bottom: 1px solid #ccc; /* Línea horizontal entre las filas */
+  padding: 8px;
+  border-bottom: 1px solid #ccc;
 }
 
-/* Estilos para la cabecera de la tabla */
 .episodes-list table thead th {
-  padding: 8px; /* Espacio interno en las celdas de la cabecera */
-  background-color: #fcfcfc; /* Color de fondo para la cabecera */
+  padding: 8px;
+  background-color: #fcfcfc;
 }

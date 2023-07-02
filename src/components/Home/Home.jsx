@@ -26,10 +26,10 @@ export default function Home() {
     const storedPodcasts = localStorage.getItem("podcasts");
 
     if (!lastFetchDate || currentDate - parseInt(lastFetchDate, 10) > oneDay) {
-      console.log("Se realiza el fetch");
+      console.log("Se realiza el fetch de la URL");
       fetchPodcastData();
     } else if (storedPodcasts) {
-      console.log("hay podcasts almacenados, no ha pasado un dia");
+      console.log("Se obtienen los datos de localStorage");
       setPodcasts(JSON.parse(storedPodcasts));
       setFilteredPodcasts(JSON.parse(storedPodcasts));
     }

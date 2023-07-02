@@ -5,14 +5,16 @@ import { PodcastContext } from "../../context/podcast.context";
 import Loading from "../Loader/Loader";
 
 export default function Header() {
-  const { isLoading } = useContext(PodcastContext);
+  const { isNavigationLoading } = useContext(PodcastContext);
 
   return (
     <div className="header-container">
       <Link className="main" to="/">
         Podcaster
       </Link>
-      <div className="loading-container">{isLoading && <Loading />}</div>
+      <div className="loading-container">
+        {isNavigationLoading && <Loading />}
+      </div>
     </div>
   );
 }

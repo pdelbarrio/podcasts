@@ -2,6 +2,8 @@
 import { Link } from "react-router-dom";
 import parse from "html-react-parser";
 import "./PodcastSidebar.css";
+import { useContext, useEffect } from "react";
+import { PodcastContext } from "../../context/podcast.context";
 
 export default function PodcastSidebar({
   artwork,
@@ -10,13 +12,24 @@ export default function PodcastSidebar({
   podcastDescription,
   podcastId,
 }) {
+  const { startNavigationLoading, stopNavigationLoading } =
+    useContext(PodcastContext);
+
+  useEffect(() => {
+    stopNavigationLoading();
+  }, [stopNavigationLoading]);
+
+  const handleStartNavigating = () => {
+    startNavigationLoading();
+  };
+
   return (
     <div className="podcastDetail-sidebar">
       <div>
         <Link
           className="podcastContainer"
           to={`/podcast/${podcastId}`}
-          //   onClick={handleStartNavigating}
+          onClick={handleStartNavigating}
         >
           <img
             className="podcastDetail-cover"

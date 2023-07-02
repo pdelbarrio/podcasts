@@ -4,18 +4,24 @@ import { createContext, useState } from "react";
 const PodcastContext = createContext();
 
 const PodcastProvider = ({ children }) => {
-  const [isLoading, setIsLoading] = useState(false);
+  const [isNavigationLoading, setisNavigationLoading] = useState(false);
 
-  const startLoading = () => {
-    setIsLoading(true);
+  const startNavigationLoading = () => {
+    setisNavigationLoading(true);
   };
 
-  const stopLoading = () => {
-    setIsLoading(false);
+  const stopNavigationLoading = () => {
+    setisNavigationLoading(false);
   };
 
   return (
-    <PodcastContext.Provider value={{ isLoading, startLoading, stopLoading }}>
+    <PodcastContext.Provider
+      value={{
+        isNavigationLoading,
+        startNavigationLoading,
+        stopNavigationLoading,
+      }}
+    >
       {children}
     </PodcastContext.Provider>
   );
